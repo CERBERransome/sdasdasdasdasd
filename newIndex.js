@@ -1,5 +1,15 @@
+//*********************** import ***********************
+//main
 import express from "express";
 //이제 babel을 적용시켜 es6의 기능을 쓸수있다 예로 require을 import로
+
+//middleware
+import morgan from "morgan";
+import helmet from "helmet";
+import cookieParser from "cookie-parser"
+import bodyParser from "body-parser"
+
+//*********************** import ***********************
 const app = express();
 const PORT = 8080;
 
@@ -11,6 +21,11 @@ const handelListen = () => console.log(`✅ Listening on: localhost:${PORT}`)
 
 const handleProfile = (req,res) => res.send("profile");
 
+
+
+
+
+
 const handleBetwwen = (req,res,next) => {
     //req와 res와 next라는 것이 매개변수로 있는데 위에서는 next를 안써서 표기를 안한것뿐이지
     //원래 모든 middleware(?)은 다 req,res,next를 가지고 있다
@@ -19,7 +34,34 @@ const handleBetwwen = (req,res,next) => {
     //이렇게 next를 안하면 여기 에서 멈추어 버리고 다음인 handleHome이 실행이 안된다
     //※꼭 넣어야 한다※
 }
-app.use(handleBetwwen)
+
+
+
+
+
+
+//start morgan
+app.use(morgan("dev"))
+//morgan은 이렇게 설정하고 short -> tiny -> dev -> common -> combind순으로 log양이 많아진다 우리가 사용할건 dev👨🏼‍💻이다
+//start helmet
+app.use(helmet())
+//다를거 없다 이게끝
+//start cookiePaser and bodyParser
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.json({extended:true}))
+//https://github.com/expressjs/body-parser
+//이렇게 옵션이 있는데 다 이해는 안해도 되고 얘기 하는 것만 이해해라
+//뒤에 urlencoded랑 json은 이 form이 받는 data방식이다 그리고 ()안에 있는건 나도 모름
+app.use(cookieParser());
+//별거 없다
+
+
+
+
+
+
+
+// app.use(handleBetwwen)
 
 app.get('/', handleHome);//handleBetwwen,handleHome);
 //자 middleware을 알아보자
@@ -39,5 +81,13 @@ app.get('/', handleHome);//handleBetwwen,handleHome);
 
 //정 이해가 안됀다 그럼 이걸 봐라
 //midleware 은 video를 upload하는걸 middleware로 가로체가서 그 video파일을 db에 올릴수 있다
+
+//모든 예시는 다 처음에 start midleware이름 이렇게 되어있음
+// Morgan - 로그를 남겨줌
+// helmet - 기초보안담당함
+// cookieParser - 쿠키를 다룰 수 있음
+// bodyParser - form데이터를 서버로 받아와서 활용가능함.
+//이렇게 npm 으로 올라와 있는 유명한 middleware도 있다
+
 app.get("/profile", handleProfile)
 app.listen(PORT, handelListen);
