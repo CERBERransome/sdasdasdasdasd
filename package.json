@@ -4,11 +4,17 @@
   "description": "wowowo",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon --exec babel-node newIndex.js"
   },
   "author": "chan",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
